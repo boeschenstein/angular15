@@ -38,3 +38,39 @@ bootstrapApplication(AppComponent)
     ```
 
 7. Run app to check if it works
+
+## Debug Validation Errors
+
+```ts
+  getAllFormValidationErrors(): any {
+    return this.getFormValidationErrors(this.myFormGroup);
+  }
+
+  getFormValidationErrors(form: FormGroup) {
+    const result: any[] = [];
+    Object.keys(form.controls).forEach(key => {
+      const controlErrors: ValidationErrors | null | undefined = form.get(key)?.errors;
+
+      if (controlErrors) {
+        Object.keys(controlErrors).forEach(keyError => {
+          result.push({
+            control: key,
+            error: keyError,
+            value: controlErrors[keyError]
+          });
+        });
+      }
+    });
+
+    return result;
+  } 
+```
+
+```html
+<pre>{{ myFormGroup.valid | json }}</pre>
+<pre>{{ control1.value | json }}</pre>
+<pre>{{ control1.errors | json }}</pre>
+<pre>{{ control2.value | json }}</pre>
+<pre>{{ control2.errors | json }}</pre>
+<pre>{{ getAllFormValidationErrors() | json }}</pre>
+```
